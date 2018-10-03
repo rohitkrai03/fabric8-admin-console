@@ -1,0 +1,12 @@
+<nav class="navbar navbar-default navbar-inverse navbar-pf" role="navigation">
+  <div class="collapse navbar-collapse" [ngClass]="{ 'in' : isIn }">
+    <ul class="nav navbar-nav navbar-right navbar-primary">
+      <li class="divider"></li>
+      <li>
+        <a *ngIf="loggedInUser" (click)="handleLogoutClick();" class="pointer">
+          Log Out
+        </a>
+      </li>
+    </ul>
+  </div> <!-- .navbar-collapse -->
+</nav>

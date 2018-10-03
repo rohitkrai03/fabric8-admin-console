@@ -1,4 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { LoginService } from '../../services/login.service';
+import { AuthenticationService } from 'ngx-login-client';
 
 @Component({
   selector: 'app-login',
@@ -7,15 +9,19 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  @Output() loginClick = new EventEmitter();
-
-  constructor() { }
+  constructor(
+    private loginService: LoginService,
+    private authService: AuthenticationService
+  ) { }
 
   ngOnInit() {
+    if (this.authService.isLoggedIn()) {
+      this.loginService.redirectAfterLogin();
+    }
   }
 
-  handleLoginClick() {
-    this.loginClick.emit();
+  handleLogin() {
+    this.loginService.redirectToAuth();
   }
 
 }
