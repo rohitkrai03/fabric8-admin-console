@@ -7,7 +7,10 @@ import { BehaviorSubject } from 'rxjs';
 export class DataStoreService {
 
   private _users = new BehaviorSubject(undefined);
-  public currentuser = this._users.asObservable();
+
+  get users() {
+    return this._users.asObservable();
+  }
 
   constructor() { }
 

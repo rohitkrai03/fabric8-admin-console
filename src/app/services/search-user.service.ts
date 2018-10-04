@@ -23,7 +23,7 @@ export class SearchUserService implements OnDestroy {
     if (username != null) {
       console.log('(in search-user Service) SUCCESS: received username ' + username + ' from app');
 
-      const readyURL = `${this.authApiUrl}/search/users?q=${username}`;
+      const readyURL = `${this.authApiUrl}search/users?q=${username}`;
 
       if (username !== '') {
 
@@ -47,7 +47,7 @@ export class SearchUserService implements OnDestroy {
         console.log('(in search-user Service) SUCCESS: fetched users');
         console.log(res);
         console.log('(in search-user Service) saving users in data-store');
-        this.savedata.store_user(res);
+        this.savedata.store_user(res.data);
       },
       err => {
         console.log('(in search-user Service) ERROR: no response from server due either of the following reasons:');

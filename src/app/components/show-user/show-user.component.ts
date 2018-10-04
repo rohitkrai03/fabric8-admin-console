@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataStoreService } from '../../services/data-store.service';
 
 @Component({
   selector: 'app-show-user',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowUserComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private store: DataStoreService
+  ) { }
 
   ngOnInit() {
   }

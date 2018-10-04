@@ -8,6 +8,11 @@ import { SearchUserService } from '../../services/search-user.service';
 })
 export class SearchUserComponent implements OnInit {
 
+  constructor(private searchuserService: SearchUserService) { }
+
+  ngOnInit() {
+  }
+
   onSearch(username: string = null) {
     if (username != null) {
 
@@ -19,11 +24,6 @@ export class SearchUserComponent implements OnInit {
     } else {
       console.log('(in app Component) ERROR: username not recieved from search component ' + username);
     }
-  }
-
-  constructor(private searchuserService: SearchUserService) { }
-
-  ngOnInit() {
   }
 
 }
