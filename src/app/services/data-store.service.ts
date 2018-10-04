@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataStoreService {
 
-  private users_list = new BehaviorSubject(undefined);
-  public currentuser = this.users_list.asObservable();
+  private _users = new BehaviorSubject(undefined);
+  public currentuser = this._users.asObservable();
 
   constructor() { }
 
@@ -16,7 +16,7 @@ export class DataStoreService {
    * stores the username received in user_list
    */
   public store_user(users) {
-    this.users_list.next(users);
+    this._users.next(users);
     console.log('(in data-store) users saved');
   }
 }

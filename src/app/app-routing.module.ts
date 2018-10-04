@@ -7,11 +7,11 @@ import { AuthGuard } from './shared/auth.guard';
 import { SearchUserComponent } from './components/search-user/search-user.component';
 
 const appRoutes: Routes = [
-  { path: 'home', canActivate: [AuthGuard], component: HomeComponent },
+//  { path: 'search', component: SearchUserComponent},
+  { path: 'search', canActivate: [AuthGuard], component: SearchUserComponent },
   { path: 'login', component: LoginComponent },
-  { path: '',   redirectTo: '/home', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent },
-  { path: 'search', component: SearchUserComponent}
+  { path: '',   redirectTo: '/search', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 @NgModule({
