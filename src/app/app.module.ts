@@ -1,18 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AUTH_API_URL, AuthenticationService, SSO_API_URL, REALM, WIT_API_PROXY, AuthInterceptor } from 'ngx-login-client';
+import { AUTH_API_URL, AuthenticationService, SSO_API_URL, REALM, WIT_API_PROXY, AuthInterceptor, UserService } from 'ngx-login-client';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { Broadcaster } from 'ngx-base';
+import { Broadcaster, Logger } from 'ngx-base';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/layout/page-not-found/page-not-found.component';
 import { HeaderComponent } from './components/layout/header/header.component';
-import { SearchUserComponent } from './components/search-user/search-user.component';
-import { ShowUserComponent } from './components/show-user/show-user.component';
-import { DataStoreService } from './services/data-store.service';
+import { UsersContainerComponent } from './components/users-container/users-container.component';
+import { UsersListComponent } from './components/users-container/users-list/users-list.component';
+import { UsersDataStore } from './store/users-data.store';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +22,9 @@ import { DataStoreService } from './services/data-store.service';
     HomeComponent,
     PageNotFoundComponent,
     HeaderComponent,
-    SearchUserComponent,
-    ShowUserComponent
+    UsersContainerComponent,
+    UsersListComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,
@@ -31,13 +33,15 @@ import { DataStoreService } from './services/data-store.service';
   ],
   providers: [
     AuthenticationService,
+    UserService,
+    Logger,
     Broadcaster,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: AUTH_API_URL, useValue: 'https://auth.prod-preview.openshift.io/api/' },
     { provide: SSO_API_URL, useValue: 'https://sso.prod-preview.openshift.io/api/' },
     { provide: WIT_API_PROXY, useValue: 'https://prod-preview.openshift.io/api/' },
     { provide: REALM, useValue: 'realm' },
-    DataStoreService
+    UsersDataStore
   ],
   bootstrap: [AppComponent]
 })
