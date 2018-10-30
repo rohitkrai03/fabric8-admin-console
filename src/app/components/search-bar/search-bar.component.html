@@ -1,12 +1,12 @@
-<div id="search-bar">
-  <input
-    #searchBar
-    type="text"
-    placeholder="Search"
-    id="searchBar"
-    (keyup.enter)="handleSearch(searchBar.value)"
-  />
-  <button
-    type="button" (click)="handleSearch(searchBar.value)"> Search
-  </button>
+<div class="search-pf has-button search">
+  <div class="form-group">
+      <div>
+          <input #searchBar type="text" (keyup.enter)="handleSearch(searchBar.value)" class="form-control" placeholder="Search" />
+      </div>
+  </div>
+  <div class="form-group">
+      <button class="btn btn-default" type="button" (click)="handleSearch(searchBar.value)">
+          <span class="fa fa-search"></span>
+      </button>
+  </div>
 </div>

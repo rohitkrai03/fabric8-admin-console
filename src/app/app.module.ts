@@ -14,6 +14,8 @@ import { UsersContainerComponent } from './components/users-container/users-cont
 import { UsersListComponent } from './components/users-container/users-list/users-list.component';
 import { UsersDataStore } from './store/users-data.store';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { ListModule, ToolbarModule, FilterModule } from 'patternfly-ng';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,11 @@ import { SearchBarComponent } from './components/search-bar/search-bar.component
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ListModule,
+    FilterModule,
+    FormsModule,
+    ToolbarModule
   ],
   providers: [
     AuthenticationService,

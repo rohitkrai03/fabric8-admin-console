@@ -1,12 +1,66 @@
-<div *ngIf = "users">
-  <div *ngIf = "users.length; else noUser">
-  <div *ngFor="let user of users">
-    <h3>{{ user.attributes.fullName }}</h3>
-    <h4>{{ user.attributes.email }}</h4>
+<div class="userList">
+  <!--toolbar starts -->
+  <div class="container-fluid" *ngIf="users">
+      <div *ngIf="users.length">
+          <div class="row toolbar-pf">
+              <div class="col-sm-12">
+                  <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"></pfng-toolbar>
+              </div>
+          </div>
+      </div>
   </div>
-</div>
-</div>
-
-<ng-template #noUser>
-  <h3>User not found !</h3>
-</ng-template>
+  <!--toolbar ends-->
+  <!-- Expansion starts -->
+  <div class="padding-15" *ngIf="users">
+      <div *ngIf="users.length">
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="form-group">
+                      <pfng-list [config]="listConfig" [expandTemplate]="expandTemplate" [items]="items" [itemTemplate]="itemTemplate">
+                          <ng-template #itemTemplate let-item="item">
+                              <div class="list-pf-left">
+                                  <span class="fa list-pf-icon list-pf-icon-bordered list-pf-icon-small">
+                                      <img src="{{item.attributes.imageURL}}" id="image">
+                                      </span>
+                                  </div>
+                                  <div class="list-pf-content-wrapper">
+                                      <div class="list-pf-main-content">
+                                          <div class="list-pf-title">{{item.attributes.fullName}}</div>
+                                          <div class="list-pf-description text-overflow-pf">{{item.attributes.username}}</div>
+                                          <div class="list-pf-description text-overflow-pf">{{item.attributes.email}}</div>
+                                      </div>
+                                  </div>
+                              </ng-template>
+                              <ng-template #expandTemplate let-item="item" let-index="index" id="expandTemplate">
+                                  <div id="expandTemplate">
+                                      <li>
+                                          <span>
+                                              <strong>Company:</strong> {{item.attributes.created-at}}
+                                          </span>
+                                      </li>
+                                      <li>
+                                          <strong>Bio:</strong>
+                                          <span *ngIf="item.attributes.bio;else noBio "> {{item.attributes.bio}}</span>
+                                      </li>
+                                      <ng-template #noBio>No Bio found.</ng-template>
+                                      <li>
+                                          <span>
+                                              <strong>UserID:</strong> {{item.attributes.UserID}}
+                                          </span>
+                                      </li>
+                                      <li>
+                                          <strong>Url:</strong>
+                                          <span *ngIf="item.attributes.url;else noUrl ">{{item.attributes.url}}</span>
+                                      </li>
+                                      <ng-template #noUrl>No Url Found</ng-template>
+                                  </div>
+                              </ng-template>
+                          </pfng-list>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!--Expandion Ends-->
+  </div>
+  
