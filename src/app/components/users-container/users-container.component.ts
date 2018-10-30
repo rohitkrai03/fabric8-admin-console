@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService, User } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
-import { UsersDataStore } from '../../store/users-data.store';
+import { UserStore } from '../../store/user.store';
 
 @Component({
   selector: 'app-users-container',
@@ -10,20 +10,20 @@ import { UsersDataStore } from '../../store/users-data.store';
 })
 export class UsersContainerComponent implements OnInit, OnDestroy {
 
-  private subscriptions: Subscription[] = new Array(new Subscription());
+  private subscriptions: Subscription = new Subscription();
   users: User[];
   isSubscriptionError: boolean;
 
   constructor(
     private userService: UserService,
-    private userStore: UsersDataStore
+    private userStore: UserStore
    ) { }
 
   ngOnInit() {
   }
 
   searchUsers(searchTerm: string): void {
-    this.subscriptions.push(
+    this.subscriptions.add(
       this.userService
         .getUsersBySearchString(searchTerm)
         .subscribe((users: User[]) => {
@@ -38,8 +38,6 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(sub => {
-      sub.unsubscribe();
-    });
+    this.subscriptions.unsubscribe();
   }
 }

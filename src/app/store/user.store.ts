@@ -5,7 +5,7 @@ import { User } from 'ngx-login-client';
 @Injectable({
   providedIn: 'root'
 })
-export class UsersDataStore {
+export class UserStore {
 
   private _users: BehaviorSubject<User[]> = new BehaviorSubject([]);
 

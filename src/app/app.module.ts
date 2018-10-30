@@ -12,7 +12,7 @@ import { PageNotFoundComponent } from './components/layout/page-not-found/page-n
 import { HeaderComponent } from './components/layout/header/header.component';
 import { UsersContainerComponent } from './components/users-container/users-container.component';
 import { UsersListComponent } from './components/users-container/users-list/users-list.component';
-import { UsersDataStore } from './store/users-data.store';
+import { UserStore } from './store/user.store';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ListModule, ToolbarModule, FilterModule } from 'patternfly-ng';
 import { FormsModule } from '@angular/forms';
@@ -47,7 +47,7 @@ import { FormsModule } from '@angular/forms';
     { provide: SSO_API_URL, useValue: 'https://sso.prod-preview.openshift.io/api/' },
     { provide: WIT_API_PROXY, useValue: 'https://prod-preview.openshift.io/api/' },
     { provide: REALM, useValue: 'realm' },
-    UsersDataStore
+    UserStore
   ],
   bootstrap: [AppComponent]
 })
