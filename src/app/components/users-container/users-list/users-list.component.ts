@@ -1,7 +1,27 @@
-import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
-import { User } from 'ngx-login-client';
-import { ListConfig, Filter, FilterConfig, FilterField, FilterEvent, FilterType, SortConfig, SortEvent,
-   ToolbarConfig, SortField} from 'patternfly-ng';
+import {
+  Component,
+  OnInit,
+  Input,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
+import {
+  User
+} from 'ngx-login-client';
+import {
+  ListConfig,
+  Filter,
+  FilterConfig,
+  FilterField,
+  FilterEvent,
+  FilterType,
+  SortConfig,
+  SortEvent,
+  ToolbarConfig,
+  SortField,
+  NotificationType
+} from 'patternfly-ng';
+
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
@@ -20,8 +40,17 @@ export class UsersListComponent implements OnInit, OnChanges {
   sortConfig: SortConfig;
   currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
+  header: String = 'No User Found';
+  message: String = 'Please Try Again';
+  type: string;
+  types: string[];
 
   ngOnInit(): void {
+    this.types = [
+      NotificationType.DANGER
+    ];
+    this.type = this.types[0];
+
     this.filterConfig = {
       fields: [{
         id: 'name',
@@ -43,7 +72,7 @@ export class UsersListComponent implements OnInit, OnChanges {
       fields: [{
         id: 'name',
         title: 'Name',
-        sortType: 'alpha'
+          sortType: 'alpha'
       }, {
         id: 'email',
         title: 'Email',
@@ -62,63 +91,65 @@ export class UsersListComponent implements OnInit, OnChanges {
   }
    // Filter
    applyFilters(filters: Filter[]): void {
-    this.items = [];
-    if (filters && filters.length > 0) {
-      this.users.forEach((item) => {
-        if (this.matchesFilters(item, filters)) {
-          this.items.push(item);
-        }
-      });
-    } else {
-      this.items = this.users;
-    }
-    this.toolbarConfig.filterConfig.resultsCount = this.items.length;
-  }
-  // Handle filter changes
-  filterChanged($event: FilterEvent): void {
-    this.filtersText = '';
-    $event.appliedFilters.forEach((filter) => {
-      this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
-    });
-    this.applyFilters($event.appliedFilters);
-  }
-  matchesFilter(item: any, filter: Filter): boolean {
-    let match = true;
-    const re = new RegExp(filter.value, 'i');
-    if (filter.field.id === 'name') {
-      match = item.attributes.fullName.match(re) !== null;
-    } else if (filter.field.id === 'email') {
-      match = item.attributes.email.match(re) !== null;
-    }
-    return match;
-  }
-  matchesFilters(item: any, filters: Filter[]): boolean {
-    let matches = true;
-    filters.forEach((filter) => {
-      if (!this.matchesFilter(item, filter)) {
-        matches = false;
-        return matches;
-      }
-    });
-    return matches;
-  }
-  // Sort
-  compare(item1: any, item2: any): number {
-    let compValue = 0;
-    if (this.currentSortField.id === 'name') {
-      compValue = item1.attributes.fullName.localeCompare(item2.attributes.fullName);
-    } else if (this.currentSortField.id === 'email') {
-      compValue = item1.attributes.email.localeCompare(item2.attributes.email);
-    }
-    if (!this.isAscendingSort) {
-      compValue = compValue * -1;
-    }
-    return compValue;
-  }
-  // Handle sort changes
-  sortChanged($event: SortEvent): void {
-    this.currentSortField = $event.field;
-    this.isAscendingSort = $event.isAscending;
-    this.items.sort((item1: any, item2: any) => this.compare(item1, item2));
-  }
+     this.items = [];
+     if (filters && filters.length > 0) {
+       this.users.forEach((item) => {
+         if (this.matchesFilters(item, filters)) {
+           this.items.push(item);
+         }
+       });
+     } else {
+       this.items = this.users;
+     }
+     this.toolbarConfig.filterConfig.resultsCount = this.items.length;
+   }
+   // Handle filter changes
+   filterChanged($event: FilterEvent): void {
+     this.filtersText = '';
+     $event.appliedFilters.forEach((filter) => {
+       this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
+     });
+     this.applyFilters($event.appliedFilters);
+   }
+   matchesFilter(item: any, filter: Filter): boolean {
+     let match = true;
+     const re = new RegExp(filter.value, 'i');
+     if (filter.field.id === 'name') {
+       match = item.attributes.fullName.match(re) !== null;
+     } else if (filter.field.id === 'email') {
+       match = item.attributes.email.match(re) !== null;
+     }
+     return match;
+   }
+   matchesFilters(item: any, filters: Filter[]): boolean {
+     let matches = true;
+     filters.forEach((filter) => {
+       if (!this.matchesFilter(item, filter)) {
+         matches = false;
+         return matches;
+       }
+     });
+     return matches;
+   }
+   // Sort
+   compare(item1: any, item2: any): number {
+     let compValue = 0;
+     if (this.currentSortField.id === 'name') {
+       compValue = item1.attributes.fullName.localeCompare(item2.attributes.fullName, 'en', {
+         sensitivity: 'base'
+       });
+     } else if (this.currentSortField.id === 'email') {
+       compValue = item1.attributes.email.localeCompare(item2.attributes.email);
+     }
+     if (!this.isAscendingSort) {
+       compValue = compValue * -1;
+     }
+     return compValue;
+   }
+   // Handle sort changes
+   sortChanged($event: SortEvent): void {
+     this.currentSortField = $event.field;
+     this.isAscendingSort = $event.isAscending;
+     this.items.sort((item1: any, item2: any) => this.compare(item1, item2));
+   }
 }

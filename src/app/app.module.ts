@@ -1,11 +1,21 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AUTH_API_URL, AuthenticationService, SSO_API_URL, REALM, WIT_API_PROXY, AuthInterceptor, UserService } from 'ngx-login-client';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+import {
+  AUTH_API_URL,
+  AuthenticationService,
+  SSO_API_URL,
+  REALM,
+  WIT_API_PROXY,
+  AuthInterceptor,
+  UserService
+} from 'ngx-login-client';
+import { UserService as userService } from '../app/services/user.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { Broadcaster, Logger } from 'ngx-base';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient, HttpParams } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/layout/page-not-found/page-not-found.component';
@@ -14,10 +24,13 @@ import { UsersContainerComponent } from './components/users-container/users-cont
 import { UsersListComponent } from './components/users-container/users-list/users-list.component';
 import { UserStore } from './store/user.store';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
-import { ListModule, ToolbarModule, FilterModule } from 'patternfly-ng';
+import { ListModule, ToolbarModule, FilterModule, ToastNotificationModule } from 'patternfly-ng';
 import { FormsModule } from '@angular/forms';
 import { CacheInterceptor } from './shared/cache.interceptor';
 import { RequestCache } from './services/request-cache.service';
+
+import { ADMIN_API_URL } from './shared/admin-api';
+import { environment } from '../../src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -37,22 +50,29 @@ import { RequestCache } from './services/request-cache.service';
     ListModule,
     FilterModule,
     FormsModule,
-    ToolbarModule
+    ToolbarModule,
+    ToastNotificationModule
   ],
   providers: [
     AuthenticationService,
     Broadcaster,
+    { provide: AUTH_API_URL, useValue: environment.authApiUrl },
+    { provide: SSO_API_URL, useValue: environment.ssoApiUrl },
+    { provide: WIT_API_PROXY, useValue: environment.witApiUrl },
+    { provide: ADMIN_API_URL, useValue: environment.adminApiUrl },
+    { provide: REALM, useValue: 'realm' },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
-    { provide: AUTH_API_URL, useValue: 'https://auth.prod-preview.openshift.io/api/' },
-    { provide: SSO_API_URL, useValue: 'https://sso.prod-preview.openshift.io/api/' },
-    { provide: WIT_API_PROXY, useValue: 'https://prod-preview.openshift.io/api/' },
-    { provide: REALM, useValue: 'realm' },
+    HttpClient,
     Logger,
     RequestCache,
     UserService,
-    UserStore
+    UserStore,
+    userService,
+  ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

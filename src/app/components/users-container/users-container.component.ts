@@ -1,7 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService, User } from 'ngx-login-client';
-import { Subscription } from 'rxjs';
-import { UserStore } from '../../store/user.store';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import {
+  User
+} from 'ngx-login-client';
+import {
+  Subscription
+} from 'rxjs';
+import {
+  UserStore
+} from '../../store/user.store';
+import {
+  UserService
+} from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-users-container',
@@ -15,22 +28,20 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   isSubscriptionError: boolean;
 
   constructor(
-    private userService: UserService,
-    private userStore: UserStore
-   ) { }
+    private userStore: UserStore,
+    private userService: UserService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   searchUsers(searchTerm: string): void {
     this.subscriptions.add(
-      this.userService
-        .getUsersBySearchString(searchTerm)
-        .subscribe((users: User[]) => {
+      this.userService.getUsersByName(searchTerm)
+      .subscribe((users: User[]) => {
           this.users = users;
           this.userStore.addUsers(users);
         },
-         err => {
+        () => {
           this.isSubscriptionError = false;
         }
       )
