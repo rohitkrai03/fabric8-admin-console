@@ -1,11 +1,6 @@
-import {
-  TestBed,
-  inject
-} from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
-import {
-  AuthGuard
-} from './auth.guard';
+import { AuthGuard } from './auth.guard';
 import {
   AuthenticationService,
   AUTH_API_URL,
@@ -13,16 +8,9 @@ import {
   WIT_API_PROXY,
   REALM
 } from 'ngx-login-client';
-import {
-  Broadcaster
-} from 'ngx-base';
-import {
-  HttpClient,
-  HttpHandler
-} from '@angular/common/http';
-import {
-  Router
-} from '@angular/router';
+import { Broadcaster } from 'ngx-base';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 describe('AuthGuard', () => {
   const fakeActivatedRoute = {
@@ -32,7 +20,10 @@ describe('AuthGuard', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AuthGuard, AuthenticationService, Broadcaster,
+      providers: [
+        AuthGuard,
+        AuthenticationService,
+        Broadcaster,
         {
           provide: AUTH_API_URL,
           useValue: 'https://auth.prod-preview.openshift.io/api/'
@@ -53,7 +44,7 @@ describe('AuthGuard', () => {
           provide: Router
         },
         HttpClient,
-        HttpHandler,
+        HttpHandler
       ]
     });
   });

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { AsyncSubject } from 'rxjs';
 
-
 export interface RequestCacheItem {
   asyncResponse: AsyncSubject<HttpResponse<any>>;
   lastRead: number;
@@ -12,7 +11,6 @@ const CACHE_TTL = 300000; // maximum cache age (ms)
 
 @Injectable()
 export class RequestCache {
-
   public cache = new Map<string, RequestCacheItem>();
 
   get(req: HttpRequest<any>): AsyncSubject<HttpResponse<any>> | undefined {
@@ -23,7 +21,7 @@ export class RequestCache {
       return undefined;
     }
 
-    const isExpired = cached.lastRead < (Date.now() - CACHE_TTL);
+    const isExpired = cached.lastRead < Date.now() - CACHE_TTL;
     return isExpired ? undefined : cached.asyncResponse;
   }
 
@@ -35,7 +33,7 @@ export class RequestCache {
 
     // remove expired cache entries
     const expired = Date.now() - CACHE_TTL;
-    this.cache.forEach(cachedItem => {
+    this.cache.forEach((cachedItem) => {
       if (cachedItem.lastRead < expired) {
         this.cache.delete(cacheKey);
       }

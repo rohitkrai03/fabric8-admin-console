@@ -7,7 +7,6 @@ import { Broadcaster } from 'ngx-base';
   providedIn: 'root'
 })
 export class LoginService {
-
   static readonly REDIRECT_URL_KEY = 'redirectUrl';
   static readonly DEFAULT_URL = '/_home';
   static readonly LOGIN_URL = '/login';

@@ -8,13 +8,9 @@ describe('UsersListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsersListComponent ],
-      schemas: [
-        CUSTOM_ELEMENTS_SCHEMA
-      ]
-
-    })
-    .compileComponents();
+      declarations: [UsersListComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -23,16 +19,16 @@ describe('UsersListComponent', () => {
     fixture.detectChanges();
   });
   it('should create', () => {
-  expect(component).toBeTruthy();
+    expect(component).toBeTruthy();
   });
-// tests for rendering profile images
+  // tests for rendering profile images
   it('should render profile images: userImages', async(() => {
-     const tag = fixture.debugElement.nativeElement;
-     expect(tag.querySelector('h1'));
-  }));
-   // tests for expaning rows values
-   it(' should display values upon expanding rows', async() => {
     const tag = fixture.debugElement.nativeElement;
-     expect(tag.querySelector('#expandTemplate'));
-   });
+    expect(tag.querySelector('h1'));
+  }));
+  // tests for expaning rows values
+  it(' should display values upon expanding rows', async () => {
+    const tag = fixture.debugElement.nativeElement;
+    expect(tag.querySelector('#expandTemplate'));
+  });
 });
