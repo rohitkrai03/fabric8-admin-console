@@ -8,11 +8,7 @@ import { AuthenticationService } from 'ngx-login-client';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
-  constructor(
-    private loginService: LoginService,
-    private authService: AuthenticationService
-  ) { }
+  constructor(private loginService: LoginService, private authService: AuthenticationService) {}
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
@@ -23,5 +19,4 @@ export class LoginComponent implements OnInit {
   handleLogin(): void {
     this.loginService.redirectToAuth();
   }
-
 }

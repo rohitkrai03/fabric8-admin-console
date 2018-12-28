@@ -68,11 +68,9 @@ import { environment } from '../../src/environments/environment';
     RequestCache,
     UserService,
     UserStore,
-    userService,
+    userService
   ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

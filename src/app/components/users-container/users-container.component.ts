@@ -1,20 +1,8 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
-import {
-  User
-} from 'ngx-login-client';
-import {
-  Subscription
-} from 'rxjs';
-import {
-  UserStore
-} from '../../store/user.store';
-import {
-  UserService
-} from 'src/app/services/user.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { User } from 'ngx-login-client';
+import { Subscription } from 'rxjs';
+import { UserStore } from '../../store/user.store';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-users-container',
@@ -22,22 +10,18 @@ import {
   styleUrls: ['./users-container.component.css']
 })
 export class UsersContainerComponent implements OnInit, OnDestroy {
-
   private subscriptions: Subscription = new Subscription();
   users: User[];
   isSubscriptionError: boolean;
 
-  constructor(
-    private userStore: UserStore,
-    private userService: UserService
-  ) {}
+  constructor(private userStore: UserStore, private userService: UserService) {}
 
   ngOnInit() {}
 
   searchUsers(searchTerm: string): void {
     this.subscriptions.add(
-      this.userService.getUsersByName(searchTerm)
-      .subscribe((users: User[]) => {
+      this.userService.getUsersByName(searchTerm).subscribe(
+        (users: User[]) => {
           this.users = users;
           this.userStore.addUsers(users);
         },

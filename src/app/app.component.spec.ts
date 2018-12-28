@@ -9,8 +9,16 @@ import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { PageNotFoundComponent } from './components/layout/page-not-found/page-not-found.component';
-import {APP_BASE_HREF} from '@angular/common';
-import { AuthenticationService, UserService, AuthInterceptor, AUTH_API_URL, SSO_API_URL, WIT_API_PROXY, REALM } from 'ngx-login-client';
+import { APP_BASE_HREF } from '@angular/common';
+import {
+  AuthenticationService,
+  UserService,
+  AuthInterceptor,
+  AUTH_API_URL,
+  SSO_API_URL,
+  WIT_API_PROXY,
+  REALM
+} from 'ngx-login-client';
 import { Logger, Broadcaster } from 'ngx-base';
 import { UserStore } from './store/user.store';
 import { RouterModule, Routes, Router } from '@angular/router';
@@ -25,58 +33,52 @@ describe('AppComponent', () => {
   ];
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-          AppComponent,
-          HomeComponent,
-          LoginComponent,
-          PageNotFoundComponent
-        ],
-        imports: [
-          BrowserModule,
-          HttpClientModule,
-          AppRoutingModule,
-          ListModule,
-          FilterModule,
-          FormsModule,
-          ToolbarModule,
-          ToastNotificationModule,
-          RouterModule.forRoot(appRoutes)
-        ],
-        providers: [{
-            provide: APP_BASE_HREF,
-            useValue: '/'
-          },
-          AuthenticationService,
-          UserService,
-          Logger,
-          Broadcaster,
-          {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true
-          },
-          {
-            provide: AUTH_API_URL,
-            useValue: 'https://auth.prod-preview.openshift.io/api/'
-          },
-          {
-            provide: SSO_API_URL,
-            useValue: 'https://sso.prod-preview.openshift.io/api/'
-          },
-          {
-            provide: WIT_API_PROXY,
-            useValue: 'https://prod-preview.openshift.io/api/'
-          },
-          {
-            provide: REALM,
-            useValue: 'realm'
-          },
-          UserStore,
-          ToastNotificationModule
+      declarations: [AppComponent, HomeComponent, LoginComponent, PageNotFoundComponent],
+      imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        ListModule,
+        FilterModule,
+        FormsModule,
+        ToolbarModule,
+        ToastNotificationModule,
+        RouterModule.forRoot(appRoutes)
       ],
-      schemas: [
-        CUSTOM_ELEMENTS_SCHEMA
-      ]
+      providers: [
+        {
+          provide: APP_BASE_HREF,
+          useValue: '/'
+        },
+        AuthenticationService,
+        UserService,
+        Logger,
+        Broadcaster,
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptor,
+          multi: true
+        },
+        {
+          provide: AUTH_API_URL,
+          useValue: 'https://auth.prod-preview.openshift.io/api/'
+        },
+        {
+          provide: SSO_API_URL,
+          useValue: 'https://sso.prod-preview.openshift.io/api/'
+        },
+        {
+          provide: WIT_API_PROXY,
+          useValue: 'https://prod-preview.openshift.io/api/'
+        },
+        {
+          provide: REALM,
+          useValue: 'realm'
+        },
+        UserStore,
+        ToastNotificationModule
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
   it('should create the app', async(() => {
