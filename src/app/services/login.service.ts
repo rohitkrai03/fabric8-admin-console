@@ -53,7 +53,6 @@ export class LoginService {
     if (result['token_json']) {
       // Handle the case that this is a login
       this.authService.logIn(result['token_json']);
-      console.log('token is :' + result);
       // Navigate back to the current URL to clear up the query string
       // this.router.navigateByUrl(this.router.url);
     } else if (this.authService.isLoggedIn()) {

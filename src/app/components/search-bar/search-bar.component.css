@@ -1,4 +1,8 @@
-.searchbox {
-    height: 42px;
-    font-size: 35px;
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    height: 33px;
+    font-size: 22px;
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { AuthenticationService } from 'ngx-login-client';
 
