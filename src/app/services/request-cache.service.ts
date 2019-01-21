@@ -21,7 +21,7 @@ export class RequestCache {
       return undefined;
     }
 
-    const isExpired = cached.lastRead < Date.now() - CACHE_TTL;
+    const isExpired = cached.lastRead < (Date.now() - CACHE_TTL);
     return isExpired ? undefined : cached.asyncResponse;
   }
 
@@ -33,7 +33,7 @@ export class RequestCache {
 
     // remove expired cache entries
     const expired = Date.now() - CACHE_TTL;
-    this.cache.forEach((cachedItem) => {
+    this.cache.forEach(cachedItem => {
       if (cachedItem.lastRead < expired) {
         this.cache.delete(cacheKey);
       }

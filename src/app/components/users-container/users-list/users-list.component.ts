@@ -11,35 +11,42 @@ import {
   SortEvent,
   ToolbarConfig,
   SortField,
-  NotificationType
+  EmptyStateConfig
 } from 'patternfly-ng';
+import { Subject, BehaviorSubject } from 'rxjs';
+
+export enum ViewState {
+  INIT = 'INIT',
+  EMPTY = 'EMPTY',
+  LOADING = 'LOADING',
+  SHOW = 'SHOW'
+}
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
-export class UsersListComponent implements OnInit, OnChanges {
-  @Input() users: User[];
 
+export class UsersListComponent implements OnInit, OnChanges {
+
+  viewState: Subject<ViewState> = new BehaviorSubject<ViewState>(ViewState.INIT);
+
+  @Input() users: User[];
+  @Input() isSearchComplete: boolean;
+
+  emptyStateConfig: EmptyStateConfig;
+  initStateConfig: EmptyStateConfig;
   listConfig: ListConfig;
   filterConfig: FilterConfig;
   filtersText: String = '';
   items: User[];
   isAscendingSort: Boolean = true;
-  separator: Object;
   sortConfig: SortConfig;
   currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
-  header: String = 'No User Found';
-  message: String = 'Please Try Again';
-  type: string;
-  types: string[];
 
   ngOnInit(): void {
-    this.types = [NotificationType.DANGER];
-    this.type = this.types[0];
-
     this.filterConfig = {
       fields: [
         {
@@ -57,9 +64,11 @@ export class UsersListComponent implements OnInit, OnChanges {
       ] as FilterField[],
       appliedFilters: []
     } as FilterConfig;
+
     this.listConfig = {
       useExpandItems: true
     } as ListConfig;
+
     this.sortConfig = {
       fields: [
         {
@@ -75,14 +84,37 @@ export class UsersListComponent implements OnInit, OnChanges {
       ],
       isAscending: this.isAscendingSort
     } as SortConfig;
+
     this.toolbarConfig = {
       filterConfig: this.filterConfig,
       sortConfig: this.sortConfig
     } as ToolbarConfig;
+
+    this.initStateConfig = {
+      iconStyleClass: 'pficon-warning-triangle-o',
+      info: 'Please enter a search string',
+      title: 'Your Search Results Will Appear Here'
+    } as EmptyStateConfig;
+
+    this.emptyStateConfig = {
+      iconStyleClass: 'pficon-warning-triangle-o',
+      info: 'No result found for your searched query. Change your search string and try again',
+      title: 'No Results Found'
+    } as EmptyStateConfig;
+
   }
-  ngOnChanges(changes: SimpleChanges) {
-    this.items = changes.users.currentValue;
+
+  ngOnChanges(change: SimpleChanges) {
+    if (!change.isSearchComplete.firstChange) {
+      if (change.isSearchComplete.currentValue) {
+        this.items = change.users ? change.users.currentValue : this.users;
+        this.viewState.next(this.items.length !== 0 ? ViewState.SHOW : ViewState.EMPTY);
+      } else {
+        this.viewState.next(ViewState.LOADING);
+      }
+    }
   }
+
   // Filter
   applyFilters(filters: Filter[]): void {
     this.items = [];
@@ -97,6 +129,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
     this.toolbarConfig.filterConfig.resultsCount = this.items.length;
   }
+
   // Handle filter changes
   filterChanged($event: FilterEvent): void {
     this.filtersText = '';
@@ -105,6 +138,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     });
     this.applyFilters($event.appliedFilters);
   }
+
   matchesFilter(item: any, filter: Filter): boolean {
     let match = true;
     const re = new RegExp(filter.value, 'i');
@@ -115,6 +149,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
     return match;
   }
+
   matchesFilters(item: any, filters: Filter[]): boolean {
     let matches = true;
     filters.forEach((filter) => {
@@ -125,6 +160,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     });
     return matches;
   }
+
   // Sort
   compare(item1: any, item2: any): number {
     let compValue = 0;
@@ -140,6 +176,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
     return compValue;
   }
+
   // Handle sort changes
   sortChanged($event: SortEvent): void {
     this.currentSortField = $event.field;

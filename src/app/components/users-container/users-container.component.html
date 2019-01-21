@@ -1,6 +1,10 @@
 <div class="col-md-12">
   <app-search-bar (search)="searchUsers($event)">
   </app-search-bar>
-    <app-users-list [users]="users"></app-users-list>
+  <div *ngIf="isSubscriptionError; else showUsers">
+    <h3>Could not fetch Users !!</h3>
+  </div>
+  <ng-template #showUsers>
+    <app-users-list [users]="users" [isSearchComplete]="isSearchComplete"></app-users-list>
+  </ng-template>
 </div>
-
