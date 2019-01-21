@@ -62,7 +62,7 @@ docker exec fabric8-ui-admin-console-builder npm install
 echo "NPM Install Complete: $(date)"
 
 ## Exec unit tests
-docker exec fabric8-ui-admin-console-builder ./run_unit_tests.sh
+docker exec fabric8-ui-admin-console-builder npm run test
 echo 'CICO: unit tests OK'
 
 
