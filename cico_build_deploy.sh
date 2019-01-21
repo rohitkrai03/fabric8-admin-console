@@ -1,17 +1,17 @@
 #!/bin/bash
 
-HOME_DIR="/home/fabric8/fabric8-ui"
-APP_DIR="packages/fabric8-ui"
-BUILDER_CONT="fabric8-ui-builder"
-DEPLOY_CONT="fabric8-ui-deploy"
+HOME_DIR="/home/fabric8/fabric8-ui-admin-console"
+APP_DIR="/"
+BUILDER_CONT="fabric8-ui-admin-console-builder"
+DEPLOY_CONT="fabric8-ui-admin-console-deploy"
 REGISTRY="quay.io"
 
 if [ "$TARGET" = "rhel" ]; then
   DOCKERFILE_DEPLOY="Dockerfile.deploy.rhel"
-  REGISTRY_URL=${REGISTRY}/openshiftio/rhel-fabric8-ui-fabric8-ui
+  REGISTRY_URL=${REGISTRY}/openshiftio/rhel-fabric8-ui-admin-console
 else
   DOCKERFILE_DEPLOY="Dockerfile.deploy"
-  REGISTRY_URL=${REGISTRY}/openshiftio/fabric8-ui-fabric8-ui
+  REGISTRY_URL=${REGISTRY}/openshiftio/fabric8-ui-admin-console
 fi
 
 # Show command before executing
@@ -56,14 +56,11 @@ if [ ! -d dist ]; then
 
   docker run --detach=true --name="${BUILDER_CONT}" -t -v $(pwd)/dist:/build:Z -e BUILD_NUMBER -e BUILD_URL -e BUILD_TIMESTAMP -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -e FABRIC8_BRANDING=openshiftio -e FABRIC8_REALM=fabric8 "${BUILDER_CONT}"
 
-  # Install talamer monorepo packages
+  # Install npm packages
   docker exec "${BUILDER_CONT}" npm install
 
-  # Bootstrap the project dependencies
-  docker exec "${BUILDER_CONT}" npm run bootstrap
-
   ## Exec unit tests
-  docker exec "${BUILDER_CONT}" ./run_unit_tests.sh
+  docker exec "${BUILDER_CONT}" npm run test
 
   echo 'CICO: unit tests OK'
   # TODO re-instate when we have code coverage
@@ -75,14 +72,13 @@ if [ ! -d dist ]; then
   docker exec "${BUILDER_CONT}" env
 
   ## Run the prod build
-  docker exec "${BUILDER_CONT}" npm run build --prefix ${APP_DIR}
+  docker exec "${BUILDER_CONT}" npm run build
 
   docker exec "${BUILDER_CONT}" git branch -va
   # Set the GIT_BRANCH to master since cico sets it to origin/master
   docker exec "${BUILDER_CONT}" env GIT_BRANCH=master
   docker exec "${BUILDER_CONT}" env
-  docker exec "${BUILDER_CONT}" npm run semantic-release-origin-master --prefix ${APP_DIR} || :
-  docker exec -u root "${BUILDER_CONT}" cp -r ${HOME_DIR}/${APP_DIR}/build /
+  docker exec -u root "${BUILDER_CONT}" cp -r ${HOME_DIR}/${APP_DIR}/dist/fabric8-admin-console /
 fi
 
 set +e

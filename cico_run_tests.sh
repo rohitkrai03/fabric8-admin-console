@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_DIR="packages/fabric8-ui"
+APP_DIR="/"
 
 # Exit on error
 set -e
@@ -48,29 +48,24 @@ fi
 
 mkdir -p dist
 
-docker build -t fabric8-ui-builder -f Dockerfile.builder .
-docker tag fabric8-ui-builder $BUILDER_IMAGE
+docker build -t fabric8-ui-admin-console-builder -f Dockerfile.builder .
+docker tag fabric8-ui-admin-console-builder $BUILDER_IMAGE
 
-docker run --detach=true --name=fabric8-ui-builder -t \
+docker run --detach=true --name=fabric8-ui-admin-console-builder -t \
   -v $(pwd)/dist:/dist:Z \
   $BUILDER_IMAGE
 
 echo "NPM Install starting: $(date)"
 
 # Build fabric8-ui
-docker exec fabric8-ui-builder npm install
+docker exec fabric8-ui-admin-console-builder npm install
 echo "NPM Install Complete: $(date)"
 
-docker exec fabric8-ui-builder npm run bootstrap
-echo "Lerna Bootstrap Complete: $(date)"
-
 ## Exec unit tests
-docker exec fabric8-ui-builder ./run_unit_tests.sh
+docker exec fabric8-ui-admin-console-builder ./run_unit_tests.sh
 echo 'CICO: unit tests OK'
-
-./upload_to_codecov.sh
 
 
 ## All ok, build prod version
-docker exec fabric8-ui-builder npm run build --prefix ${APP_DIR}
+docker exec fabric8-ui-admin-console-builder npm run build
 echo "Build Complete: $(date)"
