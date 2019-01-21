@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User, UserService as ngxUserService } from 'ngx-login-client';
+import { User } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
 import { UserStore } from '../../store/user.store';
 import { UserService } from 'src/app/services/user.service';
@@ -18,7 +18,6 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   constructor(
     private userStore: UserStore,
     private userService: UserService,
-    private tempUserService: ngxUserService
   ) {}
 
   ngOnInit() {
@@ -28,9 +27,7 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   searchUsers(searchTerm: string): void {
     this.isSearchComplete = false;
     this.subscriptions.add(
-      /* Use admin console api after it is fixed
-      this.userService.getUsersByName(searchTerm).subscribe( */
-      this.tempUserService.getUsersBySearchString(searchTerm).subscribe(
+      this.userService.getUsersByName(searchTerm).subscribe(
         (users: User[]) => {
           this.users = users;
           this.isSearchComplete = true;
