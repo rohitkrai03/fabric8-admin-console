@@ -19,8 +19,8 @@ RUN set -ex \
     gpg --import "/gpg/${key}.gpg" ; \
   done
 
-# ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 10.11.0
+#ENV NPM_CONFIG_LOGLEVEL info
+ENV NODE_VERSION 8.3.0
 
 RUN yum -y update && \
     yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 \
