@@ -20,7 +20,7 @@ RUN set -ex \
   done
 
 #ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 8.3.0
+ENV NODE_VERSION 10.14.1
 
 RUN yum -y update && \
     yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 \
