@@ -1,24 +1,7 @@
 #!/bin/bash
 
-APP_DIR="/"
-
 # Exit on error
 set -e
-
-# Export needed vars
-set +x
-eval "$(./env-toolkit load -f jenkins-env.json \
-        BUILD_NUMBER \
-        BUILD_URL \
-        JENKINS_URL \
-        GIT_BRANCH \
-        GH_TOKEN \
-        NPM_TOKEN \
-        GIT_COMMIT \
-        QUAY_USERNAME \
-        QUAY_PASSWORD \
-        DEVSHIFT_TAG_LEN)"
-export BUILD_TIMESTAMP=`date -u +%Y-%m-%dT%H:%M:%S`+00:00
 
 # Show command before executing
 set -x
@@ -35,36 +18,20 @@ yum -y install docker make git
 systemctl start docker
 echo "Docker Started: $(date)"
 
-REGISTRY="quay.io"
-TAG="1.0.0"
-BUILDER_IMAGE=${REGISTRY}/openshiftio/fabric8-ui-fabric8-ui-builder:${TAG}
-
-# Build builder image
-if [ -n "${QUAY_USERNAME}" -a -n "${QUAY_PASSWORD}" ]; then
-  docker login -u ${QUAY_USERNAME} -p ${QUAY_PASSWORD} ${REGISTRY}
-else
-  echo "Could not login, missing credentials for the registry"
-fi
-
-mkdir -p dist
-
+# build a docker image
 docker build -t fabric8-ui-admin-console-builder -f Dockerfile.builder .
-docker tag fabric8-ui-admin-console-builder $BUILDER_IMAGE
 
-docker run --detach=true --name=fabric8-ui-admin-console-builder -t \
-  -v $(pwd)/dist:/dist:Z \
-  $BUILDER_IMAGE
+# run the build image
+docker run --detach=true --name=fabric8-ui-admin-console-builder fabric8-ui-admin-console-builder
 
 echo "NPM Install starting: $(date)"
-
-# Build fabric8-ui
+# Build fabric8-admin-console
 docker exec fabric8-ui-admin-console-builder npm install
 echo "NPM Install Complete: $(date)"
 
 ## Exec unit tests
 docker exec fabric8-ui-admin-console-builder npm run test
 echo 'CICO: unit tests OK'
-
 
 ## All ok, build prod version
 docker exec fabric8-ui-admin-console-builder npm run build

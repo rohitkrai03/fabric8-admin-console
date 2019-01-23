@@ -19,23 +19,10 @@ RUN set -ex \
     gpg --import "/gpg/${key}.gpg" ; \
   done
 
-#ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 10.14.1
 
-RUN yum -y update && \
-    yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 \
-      centos-release-scl \
-      python-setuptools xorg-x11-xauth wget unzip which \
-      xorg-x11-server-Xvfb xfonts-100dpi libXfont GConf2 \
-      xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
-      ipa-gothic-fonts xorg-x11-utils xorg-x11-fonts-Type1 xorg-x11-fonts-misc \
-      epel-release libappindicator && \
-      yum-config-manager --enable centos-sclo-sclo && \
-      yum -y install sclo-git212 && \
-      yum -y clean all
+RUN yum -y update && yum -y clean all
 
-# Set the SCL git v2.12 on the path so we can use it
-ENV PATH=/opt/rh/sclo-git212/root/usr/bin:${PATH}
 RUN env
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
@@ -46,27 +33,16 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-# Uncomment it if you want to use firefox
-#RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.14.0/geckodriver-v0.14.0-linux64.tar.gz \
-#  && tar -xvf geckodriver-v0.14.0-linux64.tar.gz \
-#  && chmod +x geckodriver \
-#  && rm geckodriver-v0.14.0-linux64.tar.gz \
-#  && mv geckodriver /usr/bin \
-#  && yum install -y firefox \
-#  && npm install -g karma-firefox-launcher
 
-# RUN npm install -g jasmine-node protractor
+COPY src/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
+RUN yum install -y google-chrome-stable
 
-# COPY google-chrome.repo /etc/yum.repos.d/google-chrome.repo
-RUN yum install -y xorg-x11-server-Xvfb google-chrome-stable
-
-ENV DISPLAY=:99
 ENV FABRIC8_USER_NAME=fabric8
 
 RUN useradd --user-group --create-home --shell /bin/false ${FABRIC8_USER_NAME}
 
 ENV HOME=/home/${FABRIC8_USER_NAME}
-ENV WORKSPACE=$HOME/fabric8-ui
+ENV WORKSPACE=$HOME/fabric8-ui-admin-console
 RUN mkdir $WORKSPACE
 
 COPY . $WORKSPACE
