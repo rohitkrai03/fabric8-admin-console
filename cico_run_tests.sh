@@ -22,7 +22,7 @@ echo "Docker Started: $(date)"
 docker build -t fabric8-ui-admin-console-builder -f Dockerfile.builder .
 
 # run the build image
-docker run --detach=true --name=fabric8-ui-admin-console-builder fabric8-ui-admin-console-builder
+docker run --detach=true --name=fabric8-ui-admin-console-builder -t fabric8-ui-admin-console-builder
 
 echo "NPM Install starting: $(date)"
 # Build fabric8-admin-console
