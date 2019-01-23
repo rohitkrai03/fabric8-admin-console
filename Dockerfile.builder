@@ -50,9 +50,3 @@ RUN chown -R ${FABRIC8_USER_NAME}:${FABRIC8_USER_NAME} $HOME/*
 
 USER ${FABRIC8_USER_NAME}
 WORKDIR $WORKSPACE/
-
-VOLUME /dist
-
-EXPOSE 3000
-
-ENTRYPOINT ["/home/fabric8/fabric8-ui/docker-entrypoint.sh"]
