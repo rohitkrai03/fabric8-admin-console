@@ -7,6 +7,7 @@ import { AUTH_API_URL, SSO_API_URL, WIT_API_PROXY, REALM, UserService, Authentic
 import { ADMIN_API_URL } from '../shared/admin-api';
 import { Broadcaster, Logger } from 'ngx-base';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHandler } from '@angular/common/http';
 
 describe('LoginService', () => {
   beforeEach(() => TestBed.configureTestingModule({

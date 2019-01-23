@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
 import { ADMIN_API_URL } from '../shared/admin-api';
-import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,14 +20,12 @@ export class UserService {
   ) {
     this.searchUrl = adminUrl + 'search/users?';
   }
-
   getUsersByName(searchTerm: string): Observable < User[] > {
     const params = this.searchUrl + `q=${searchTerm}`;
     if (searchTerm && searchTerm !== '') {
       return this.http
         .get<{data: User[]}>(params, {headers: this.headers})
         .pipe(
-          tap((res) => console.log(res)),
           map((res) => res.data)
         );
     }
