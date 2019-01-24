@@ -54,7 +54,7 @@ docker ps -a | grep -q "${BUILDER_CONT}" && docker rm "${BUILDER_CONT}"
 if [ ! -d dist ]; then
   mkdir dist
 
-  docker run --detach=true --name="${BUILDER_CONT}" -t -v $(pwd)/dist:/home/fabric8/fabric8-ui-admin-console/dist:Z "${BUILDER_CONT}"
+  docker run --detach=true --name="${BUILDER_CONT}" -t -v $(pwd)/dist:/home/fabric8/fabric8-ui-admin-console/build:Z "${BUILDER_CONT}"
 
   # Install npm packages
   docker exec "${BUILDER_CONT}" npm install
@@ -66,6 +66,9 @@ if [ ! -d dist ]; then
 
   ## Run the prod build
   docker exec "${BUILDER_CONT}" npm run build:prod
+
+  ## Copy everything from dist/ to build/ as a workaround for permission issue while deleting dist
+  docker exec "${BUILDER_CONT}" cp -ra dist/. build/
 
 fi
 
