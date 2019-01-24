@@ -3,7 +3,7 @@
 HOME_DIR="/home/fabric8/fabric8-ui-admin-console"
 APP_DIR="/"
 BUILDER_CONT="fabric8-ui-admin-console-builder"
-DEPLOY_CONT="fabric8-ui-admin-console-deploy"
+DEPLOY_CONT="fabric8-ui-admin-console"
 REGISTRY="quay.io"
 
 if [ "$TARGET" = "rhel" ]; then
