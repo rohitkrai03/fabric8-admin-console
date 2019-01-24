@@ -1,7 +1,9 @@
+const env = window['AdminConsoleEnv'] || {};
+
 export const environment = {
   production: true,
-  adminApiUrl: 'https://admin-console.api.openshift.io/api/',
-  authApiUrl: 'https://auth.prod.openshift.io/api/',
-  ssoApiUrl: 'https://sso.prod.openshift.io/api/',
-  witApiUrl: 'https://prod.openshift.io/api/'
+  adminApiUrl: env.adminApiUrl || 'https://admin-console.api.prod-preview.openshift.io/api/',
+  authApiUrl: env.authApiUrl || 'https://auth.prod-preview.openshift.io/api/',
+  witApiUrl: env.witApiUrl || 'https://api.prod-preview.openshift.io/api/',
+  ssoApiUrl: env.ssoApiUrl || 'https://sso.prod-preview.openshift.io/api/'
 };

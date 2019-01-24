@@ -65,7 +65,7 @@ if [ ! -d dist ]; then
   echo 'CICO: unit tests OK'
 
   ## Run the prod build
-  docker exec "${BUILDER_CONT}" npm run build
+  docker exec "${BUILDER_CONT}" npm run build:prod
 
 fi
 
