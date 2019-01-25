@@ -68,7 +68,7 @@ if [ ! -d dist ]; then
   docker exec "${BUILDER_CONT}" npm run build:prod
 
   ## Copy everything from dist/ to build/ as a workaround for permission issue while deleting dist
-  docker exec "${BUILDER_CONT}" cp -ra dist/. build/
+  docker exec -u root "${BUILDER_CONT}" cp -ra dist/. build/
 
 fi
 
