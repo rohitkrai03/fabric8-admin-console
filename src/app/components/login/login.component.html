@@ -1,23 +1,25 @@
-<div class="pf-c-background-image">
-</div>
+<div class="pf-c-background-image"></div>
 <div class="pf-c-login">
   <div class="pf-c-login__container">
     <header class="pf-c-login__header">
-      <p>Admin Console is a feature of OSIO that will help in managing Admin users on OSIO</p>
+      <p>Admin Console is a application for admins to manage users on Codeready Toolchain.</p>
     </header>
     <main class="pf-c-login__main">
       <header class="pf-c-login__main-header">
-        <h1 class="pf-c-title pf-m-3xl">
-          Log in to your OpenShift.io ccount
-        </h1>
-        <p>
-          <button type="submit" class="pf-c-button pf-m-primary pf-m-block" (click)="handleLogin()">Log In</button>
-        </p>
-        <p>
-            Need an account?
-            <a href="https://openshift.io">Sign up</a>
-        </p>
+        <h2 class="pf-c-title pf-m-3xl">Log in to your Codeready Toolchain account</h2>
       </header>
+      <div class="pf-c-login__main-body">
+        <div class="pf-c-form__group pf-m-action">
+          <button class="pf-c-button pf-m-primary" (click)="handleLogin()">Log in</button>
+        </div>
+      </div>
+      <footer class="pf-c-login__main-footer">
+        <div class="pf-c-login__main-footer-band">
+          <p class="pf-c-login__main-footer-band-item">
+            Need an account? <a href="https://openshift.io">Sign up.</a>
+          </p>
+        </div>
+      </footer>
     </main>
   </div>
 </div>
